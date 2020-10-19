@@ -1,8 +1,19 @@
 # Running Tracker App
 Monitor your walks and runs, save and display run times, distances and speed information.
 
- This Kotlin project showcases these concepts:
+<br/>
 
+<div class="row">
+<img src="images/screenshots/scr1.png" width="170">
+<img src="images/screenshots/scr2.png" width="170">
+<img src="images/screenshots/scr3.png" width="170">
+<img src="images/screenshots/scr4.png" width="170">
+<img src="images/screenshots/scr5.png" width="170">
+</div>
+
+<br/>
+
+ ###Kotlin project Containing:
 - Architecture Components: MVVM, Room, Live Data, Navigation.
 - Location based app, using Google Maps API and drawing paths on MapView.
 - Dependency Injection using Dagger Hilt (AppModule, ServiceModule).
@@ -18,22 +29,15 @@ Monitor your walks and runs, save and display run times, distances and speed inf
 <br/>
 
 ### Useful Libraries:
-[Timber](https://github.com/JakeWharton/timber) 
+[Timber](https://github.com/JakeWharton/timber)
+
 [Glide](https://github.com/bumptech/glide) 
+
 [EasyPermissions](https://github.com/googlesamples/easypermissions) 
+
 [Chart View](https://github.com/PhilJay/MPAndroidChart) 
 
 
-
-<br/>
-
-<div class="row">
-<img src="images/screenshots/scr1.jpeg" width="170">
-<img src="images/screenshots/scr2.jpeg" width="170">
-<img src="images/screenshots/scr3.jpeg" width="170">
-<img src="images/screenshots/scr4.jpeg" width="170">
-<img src="images/screenshots/scr5.jpeg" width="170">
-</div>
 
 <br/>
 
@@ -43,6 +47,7 @@ You must create a key for your project and insert in manifest file. I am securin
 <br/>
 
 
+### Credits:
 This app was built thanks to Philipp Lackner's tutorials: https://github.com/philipplackner/RunningAppYT
 check out his awesome projects.
 
