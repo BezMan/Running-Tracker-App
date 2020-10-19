@@ -4,11 +4,11 @@ Monitor your walks and runs, save and display run times, distances and speed inf
 <br/>
 
 <div class="row">
-<img src="/images/screenshots/scr1.PNG" width="210">
-<img src="/images/screenshots/scr2.PNG" width="210">
-<img src="/images/screenshots/scr3.PNG" width="210">
-<img src="/images/screenshots/scr4.PNG" width="210">
-<img src="/images/screenshots/scr5.PNG" width="210">
+<img src="/images/screenshots/scr1.PNG" width="300">
+<img src="/images/screenshots/scr2.PNG" width="300">
+<img src="/images/screenshots/scr3.PNG" width="300">
+<img src="/images/screenshots/scr4.PNG" width="300">
+<img src="/images/screenshots/scr5.PNG" width="300">
 </div>
 
 <br/>
