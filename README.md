@@ -1,5 +1,6 @@
 # Running Tracker App
-Monitor your walks and runs, save and display run times, distances and speed information.
+Monitor your walks and runs 🏃‍♀️🏃‍♂️ 
+Save and display run times, distances and speed information.
 
 <br/>
 
@@ -13,7 +14,7 @@ Monitor your walks and runs, save and display run times, distances and speed inf
 
 <br/>
 
- ###Kotlin project Containing:
+### Kotlin project Containing:
 - Architecture Components: MVVM, Room, Live Data, Navigation.
 - Location based app, using Google Maps API and drawing paths on MapView.
 - Dependency Injection using Dagger Hilt (AppModule, ServiceModule).
