@@ -19,13 +19,14 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tracking.*
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.round
+
+const val DIALOG_TAG = "DIALOG_TAG"
 
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
@@ -63,7 +64,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         if (currentTimeInMillis > 0L) {
-            this.menu?.getItem(0)?.isVisible = true
+            this.menu?.findItem(R.id.cancelTracking)?.isVisible = true
         }
     }
 
@@ -76,18 +77,9 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
 
     private fun showCancelTrackingDialog() {
-        val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
-            .setTitle("Cancel Run")
-            .setMessage("Are you sure you want to cancel the Run?")
-            .setIcon(R.drawable.ic_delete)
-            .setPositiveButton("Yes") { _, _ ->
-                stopRun()
-            }
-            .setNegativeButton("No") { dialogInterface, _ ->
-                dialogInterface.cancel()
-            }
-            .create()
-        dialog.show()
+        DialogCancelTracking().apply {
+            setListener { stopRun() }
+        }.show(parentFragmentManager, DIALOG_TAG)
     }
 
     private fun stopRun() {
@@ -116,6 +108,13 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         }
 
         subscribeToObservers()
+
+        if (savedInstanceState != null) { //dialog logic should continue on rotate.
+            val dialogCancelTracking =
+                parentFragmentManager.findFragmentByTag(DIALOG_TAG) as DialogCancelTracking?
+            dialogCancelTracking?.setListener { stopRun() }
+        }
+
     }
 
 
@@ -150,7 +149,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
         if (isTracking) {
-            menu?.getItem(0)?.isVisible = true
+            menu?.findItem(R.id.cancelTracking)?.isVisible = true
             btnStopStartRun.text = "Stop"
             btnEndRun.visibility = View.GONE
         } else if (currentTimeInMillis > 0L) {
