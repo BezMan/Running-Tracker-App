@@ -130,9 +130,11 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         })
 
         TrackingService.timeRunInMillis.observe(viewLifecycleOwner, Observer {
-            currentTimeInMillis = it
-            val formattedTime = TrackingUtility.getFormattedTimer(currentTimeInMillis, true)
-            tvTimer.text = formattedTime
+            if(isTracking) {
+                currentTimeInMillis = it
+                val formattedTime = TrackingUtility.getFormattedTimer(currentTimeInMillis, true)
+                tvTimer.text = formattedTime
+            }
         })
     }
 
