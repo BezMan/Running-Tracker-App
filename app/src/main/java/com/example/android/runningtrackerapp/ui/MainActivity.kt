@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.android.runningtrackerapp.R
 import com.example.android.runningtrackerapp.other.Constants
@@ -18,7 +19,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        navigateToTrackingFragmentIfNeeded(intent)
+        if (intent?.action == Constants.ACTION_SHOW_TRACKING_FRAGMENT) {
+            navHostFragment.findNavController().navigate(R.id.action_global_trackingFragment)
+        }
 
         setSupportActionBar(toolbar)
         bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
@@ -33,16 +36,21 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            if (!navHostFragment.findNavController().popBackStack(it.itemId, false)) {
+                //if nothing to pop, we navigate to it.
+                navHostFragment.findNavController().navigate(it.itemId)
+                true
+            } else
+                NavigationUI.onNavDestinationSelected(it, navHostFragment.findNavController())
+        }
+
     }
 
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        navigateToTrackingFragmentIfNeeded(intent)
-    }
-
-
-    private fun navigateToTrackingFragmentIfNeeded(intent: Intent?){
+        //notification click should go to tracking fragment//
         if (intent?.action == Constants.ACTION_SHOW_TRACKING_FRAGMENT) {
             navHostFragment.findNavController().navigate(R.id.action_global_trackingFragment)
         }
