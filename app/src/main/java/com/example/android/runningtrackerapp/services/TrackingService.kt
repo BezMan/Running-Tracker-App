@@ -33,8 +33,6 @@ typealias Polyline = MutableList<LatLng>
 @AndroidEntryPoint
 class TrackingService : LifecycleService() /* we cannot .observe a regular Service */ {
 
-    var isServiceKilled = false
-
     @Inject
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -62,7 +60,7 @@ class TrackingService : LifecycleService() /* we cannot .observe a regular Servi
         postInitialValues()
 
         isTracking.observe(this, {
-            if(!isServiceKilled) { //when service killed, we stop updating notification
+            if(!isFirstRun) { //when service killed, we stop updating notification
                 updateLocationTracking(it)
                 updateNotificationState(it)
             }
@@ -140,7 +138,6 @@ class TrackingService : LifecycleService() /* we cannot .observe a regular Servi
     }
 
     private fun killService() {
-        isServiceKilled = true
         isFirstRun = true
         pauseService()
         postInitialValues()
@@ -241,7 +238,7 @@ class TrackingService : LifecycleService() /* we cannot .observe a regular Servi
         startForeground(Constants.NOTIFICATION_ID, baseNotificationBuilder.build())
 
         timeRunInSeconds.observe(this, {
-            if(!isServiceKilled) { //when service killed, we stop updating notification
+            if(!isFirstRun) { //when service killed, we stop updating notification
                 var notification = currentNotificationBuilder
                     .setContentText(TrackingUtility.getFormattedTimer(it * 1000L))
                 notificationManager.notify(Constants.NOTIFICATION_ID, notification.build())
