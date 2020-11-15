@@ -63,7 +63,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        if (currentTimeInMillis > 0L) {
+        if (!TrackingService.isFirstRun) {
             this.menu?.findItem(R.id.cancelTracking)?.isVisible = true
         }
     }
@@ -130,7 +130,8 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         })
 
         TrackingService.timeRunInMillis.observe(viewLifecycleOwner, Observer {
-            if(isTracking) {
+            //display time only if we started the tracking service
+            if(!TrackingService.isFirstRun) {
                 currentTimeInMillis = it
                 val formattedTime = TrackingUtility.getFormattedTimer(currentTimeInMillis, true)
                 tvTimer.text = formattedTime
@@ -154,7 +155,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             menu?.findItem(R.id.cancelTracking)?.isVisible = true
             btnStopStartRun.text = "Stop"
             btnEndRun.visibility = View.GONE
-        } else if (currentTimeInMillis > 0L) {
+        } else if (!TrackingService.isFirstRun) {
             btnStopStartRun.text = "Start"
             btnEndRun.visibility = View.VISIBLE
         }

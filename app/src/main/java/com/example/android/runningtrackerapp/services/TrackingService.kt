@@ -33,7 +33,6 @@ typealias Polyline = MutableList<LatLng>
 @AndroidEntryPoint
 class TrackingService : LifecycleService() /* we cannot .observe a regular Service */ {
 
-    var isFirstRun = true
     var isServiceKilled = false
 
     @Inject
@@ -53,6 +52,7 @@ class TrackingService : LifecycleService() /* we cannot .observe a regular Servi
         val timeRunInMillis = MutableLiveData<Long>()
         val isTracking = MutableLiveData<Boolean>()
         val pathPoints = MutableLiveData<MutableList<Polyline>>()
+        var isFirstRun = true
     }
 
 

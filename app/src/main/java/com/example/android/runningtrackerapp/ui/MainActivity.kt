@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
@@ -15,20 +16,25 @@ import kotlinx.android.synthetic.main.activity_main.*
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var navController: NavController
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (intent?.action == Constants.ACTION_SHOW_TRACKING_FRAGMENT) {
-            navHostFragment.findNavController().navigate(R.id.action_global_trackingFragment)
-        }
+        navController = navHostFragment.findNavController()
+
+        navigateToTrackingFragmentIfNeeded(intent)
 
         setSupportActionBar(toolbar)
-        bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
+
+        //link bottomNavigationView menu ids with nav fragment ids
+        bottomNavigationView.setupWithNavController(navController)
 
         bottomNavigationView.setOnNavigationItemReselectedListener { /* No-Op */ }
 
-        navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.settingsFragment, R.id.runFragment, R.id.statisticsFragment ->
                     bottomNavigationView.visibility = View.VISIBLE
@@ -37,12 +43,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
         bottomNavigationView.setOnNavigationItemSelectedListener {
-            if (!navHostFragment.findNavController().popBackStack(it.itemId, false)) {
+            if (!navController.popBackStack(it.itemId, false)) {
                 //if nothing to pop, we navigate to it.
-                navHostFragment.findNavController().navigate(it.itemId)
+                navController.navigate(it.itemId)
                 true
             } else
-                NavigationUI.onNavDestinationSelected(it, navHostFragment.findNavController())
+                NavigationUI.onNavDestinationSelected(it, navController)
         }
 
     }
@@ -50,10 +56,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        //notification click should go to tracking fragment//
+        navigateToTrackingFragmentIfNeeded(intent)
+    }
+
+
+    /** notification should navigate to tracking fragment */
+    private fun navigateToTrackingFragmentIfNeeded(intent: Intent?) {
         if (intent?.action == Constants.ACTION_SHOW_TRACKING_FRAGMENT) {
-            navHostFragment.findNavController().navigate(R.id.action_global_trackingFragment)
+            navController.navigate(R.id.action_global_trackingFragment)
         }
     }
+
 
 }
