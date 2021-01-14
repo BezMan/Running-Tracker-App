@@ -2,6 +2,7 @@ package com.example.android.runningtrackerapp.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,6 +13,7 @@ import com.example.android.runningtrackerapp.R
 import com.example.android.runningtrackerapp.adapters.RunAdapter
 import com.example.android.runningtrackerapp.other.SortType
 import com.example.android.runningtrackerapp.other.TrackingUtility
+import com.example.android.runningtrackerapp.services.TrackingService
 import com.example.android.runningtrackerapp.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_run.*
@@ -31,6 +33,8 @@ class RunFragment: Fragment(R.layout.fragment_run), EasyPermissions.PermissionCa
 
         setupRecyclerView()
 
+        setupFab()
+
         spFilter.setSelection(viewModel.currSortType.ordinal)
 
         spFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -49,6 +53,21 @@ class RunFragment: Fragment(R.layout.fragment_run), EasyPermissions.PermissionCa
         viewModel.runs.observe(viewLifecycleOwner, Observer {
             runAdapter.submitListDiff(it)
         })
+
+    }
+
+    private fun setupFab() {
+        if (!TrackingService.isFirstRun) {
+            fab.setImageResource(R.drawable.ic_run)
+
+            TrackingService.isTracking.observe(viewLifecycleOwner, Observer {
+                if (it) {
+                    fab.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.rotate));
+                } else {
+                    fab.clearAnimation()
+                }
+            })
+        }
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_runFragment_to_trackingFragment2)
