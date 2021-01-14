@@ -75,7 +75,6 @@ class TrackingService : LifecycleService() /* we cannot .observe a regular Servi
 
 
     private fun startTimer() {
-        addEmptyPolyline()
         isTracking.postValue(true)
         timeStarted = System.currentTimeMillis()
         isTimerEnabled = true
@@ -224,6 +223,7 @@ class TrackingService : LifecycleService() /* we cannot .observe a regular Servi
 
 
     private fun startForegroundService() {
+        addEmptyPolyline()
         startTimer()
         isTracking.postValue(true)
 
