@@ -181,14 +181,16 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
                 bounds.include(pos)
             }
         }
-        map?.moveCamera(
-            CameraUpdateFactory.newLatLngBounds(
-                bounds.build(),
-                mapView.width,
-                mapView.height,
-                (mapView.height * 0.05f).toInt() //padding for mapView
+        if (pathPoints.size > 1) {
+            map?.moveCamera(
+                CameraUpdateFactory.newLatLngBounds(
+                    bounds.build(),
+                    mapView.width,
+                    mapView.height,
+                    (mapView.height * 0.05f).toInt() //padding for mapView
+                )
             )
-        )
+        }
     }
 
     private fun endRunAndSaveToDB() {
